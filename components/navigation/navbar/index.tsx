@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+import MobileNavigation from "./MobileNavigation";
 import Theme from "./Theme";
 
 // import Theme from "./Theme";
@@ -27,6 +28,8 @@ const Navbar = () => {
       <div className="flex-between gap-5 text-dark-100 dark:text-light-900">
         <Theme />
       </div>
+
+      <MobileNavigation />
     </nav>
   );
 };
