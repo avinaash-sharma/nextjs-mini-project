@@ -1,15 +1,17 @@
-import { ROUTES } from "@/constants/routes";
 import Link from "next/link";
 import React from "react";
-import { Badge } from "../ui/badge";
+
+import { ROUTES } from "@/constants/routes";
 import { getDeviconClassName } from "@/lib/utils";
+
+import { Badge } from "../ui/badge";
 
 interface Props {
   _id: string;
   name: string;
-  questions: number;
-  showCount: boolean;
-  compact: boolean;
+  questions?: number;
+  showCount?: boolean;
+  compact?: boolean;
 }
 const TagCard = ({ _id, name, questions, showCount, compact }: Props) => {
   const iconClass = getDeviconClassName(name);
