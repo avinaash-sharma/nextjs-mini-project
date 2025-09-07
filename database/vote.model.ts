@@ -1,23 +1,21 @@
-import { model, models, Schema, Types } from "mongoose";
+import { Schema, models, model, Types, Document } from "mongoose";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IVote {
   author: Types.ObjectId;
-  id: Types.ObjectId;
-  type: "answer" | "question";
-  voteType: "upvote" | "downvote";
+  actionId: Types.ObjectId;
+  actionType: string;
+  voteType: string;
 }
 
+export interface IVoteDoc extends IVote, Document {}
 const VoteSchema = new Schema<IVote>(
   {
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    id: { type: Schema.Types.ObjectId, required: true },
-    type: { type: String, enum: ["answer", "question"], required: true },
+    actionId: { type: Schema.Types.ObjectId, required: true },
+    actionType: { type: String, enum: ["question", "answer"], required: true },
     voteType: { type: String, enum: ["upvote", "downvote"], required: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Vote = models?.Vote || model<IVote>("Vote", VoteSchema);

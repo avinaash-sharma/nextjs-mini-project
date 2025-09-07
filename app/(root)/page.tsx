@@ -1,10 +1,13 @@
 import Link from "next/link";
 
-import QuestionCards from "@/components/cards/QuestionCards";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/constants/routes";
+import ROUTES from "@/constants/routes";
+import handleError from "@/lib/handlers/error";
+import { ValidationError } from "@/lib/http-errors";
+
+import QuestionCard from "@/components/cards/QuestionCard";
 
 const questions = [
   {
@@ -13,77 +16,70 @@ const questions = [
     description: "I want to learn React, can anyone help me?",
     tags: [
       { _id: "1", name: "React" },
-      { _id: "2", name: "react" },
-    ],
-    author: {
-      _id: "1",
-      name: "John Doe",
-      image:
-        "https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp",
-    },
-    upvotes: 10,
-    answers: 5,
-    views: 100,
-    createdAt: new Date("2023-10-01"),
-  },
-  {
-    _id: "2",
-    title: "How to learn JavaScript? ReactJS? NodeJS?",
-    description: "I want to learn JavaScript, can anyone help me?",
-    tags: [
-      { _id: "1", name: "javascript" },
       { _id: "2", name: "JavaScript" },
     ],
     author: {
       _id: "1",
       name: "John Doe",
       image:
-        "https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp",
+        "https://static.vecteezy.com/system/resources/previews/002/002/403/non_2x/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
     },
     upvotes: 10,
     answers: 5,
     views: 100,
-    createdAt: new Date("2025-03-01"),
+    createdAt: new Date(),
   },
   {
-    _id: "3",
-    title: "How to learn Next.js?",
-    description: "I want to learn Next.js, can anyone help me?",
+    _id: "2",
+    title: "How to learn JavaScript?",
+    description: "I want to learn JavaScript, can anyone help me?",
     tags: [
-      { _id: "1", name: "react" },
-      { _id: "2", name: "react" },
+      { _id: "1", name: "JavaScript" },
+      { _id: "2", name: "JavaScript" },
     ],
     author: {
       _id: "1",
       name: "John Doe",
       image:
-        "https://a.storyblok.com/f/191576/1200x800/215e59568f/round_profil_picture_after_.webp",
+        "https://static.vecteezy.com/system/resources/previews/002/002/403/non_2x/man-with-beard-avatar-character-isolated-icon-free-vector.jpg",
     },
     upvotes: 10,
     answers: 5,
     views: 100,
-    createdAt: new Date("2025-10-01"),
+    createdAt: new Date("2021-09-01"),
   },
 ];
 
-// somthing like ~ 'query=react'
+const test = async () => {
+  try {
+    throw new ValidationError({
+      title: ["Required"],
+      tags: ['"JavaScript" is not a valid tag.'],
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
+  await test();
+
   const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
-    const queryMatch = question.title
+    const matchesQuery = question.title
       .toLowerCase()
-      .includes(query?.toLowerCase());
-    const filterMatch = filter
-      ? question.tags[0]?.name.toLowerCase() === filter?.toLowerCase()
+      .includes(query.toLowerCase());
+    const matchesFilter = filter
+      ? question.tags[0].name.toLowerCase() === filter.toLowerCase()
       : true;
-
-    return queryMatch && filterMatch;
+    return matchesQuery && matchesFilter;
   });
+
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -107,7 +103,7 @@ const Home = async ({ searchParams }: SearchParams) => {
       <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
-          <QuestionCards key={question._id} question={question} />
+          <QuestionCard key={question._id} question={question} />
         ))}
       </div>
     </>
