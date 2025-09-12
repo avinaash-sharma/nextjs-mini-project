@@ -65,3 +65,25 @@ export const AskQuestionSchema = z.object({
     .min(1, { message: "At least one tag is required." })
     .max(3, { message: "You can add up to 5 tags." }),
 });
+
+export const UserSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "Name is required." })
+    .max(50, { message: "Name cannot exceed 50 characters." })
+    .regex(/^[a-zA-Z\s]+$/, {
+      message: "Name can only contain letters and spaces.",
+    }),
+  username: z
+    .string()
+    .min(3, { message: "Username must be atleast 3 characters long.})" }),
+  email: z.string().email({ message: "Please provide a valid email address" }),
+  bio: z.string().optional(),
+  image: z.string().url({ message: "Please provide a valid URL." }).optional(),
+  location: z.string().optional(),
+  portfolio: z
+    .string()
+    .url({ message: "Please provide a valid URL." })
+    .optional(),
+  reputation: z.number().optional(),
+});
