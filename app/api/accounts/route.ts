@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 
 import Account from "@/database/account.model";
-import User from "@/database/user.model";
 import handleError from "@/lib/handlers/error";
-import { ForbiddenError, ValidationError } from "@/lib/http-errors";
+import { ForbiddenError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
-import { AccountSchema, UserSchema } from "@/lib/validations";
+import { AccountSchema } from "@/lib/validations";
 import { APIErrorResponse } from "@/types/global";
 
 export async function GET() {
