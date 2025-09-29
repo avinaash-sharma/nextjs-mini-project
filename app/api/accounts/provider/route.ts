@@ -10,7 +10,6 @@ import { APIErrorResponse } from "@/types/global";
 // GET BY EMAIL : /api/users/email
 export async function POST(request: Request) {
   const { providerAccountId } = await request.json();
-  console.log("🚀 ~ POST ~ providerAccountId:", providerAccountId);
   try {
     await dbConnect();
     const validatedData = AccountSchema.partial().safeParse({
